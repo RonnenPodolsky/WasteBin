@@ -10,7 +10,7 @@ import Document from "./models/Document.js"
 
 
 try {
-    mongoose.connect("mongodb+srv://Cluster54712:cllsclhIVHRc@cluster54712.encknda.mongodb.net/wastebin?retryWrites=true&w=majority/", {
+    mongoose.connect(`mongodb+srv://:${process.env.USER}@${process.env.PASSWORD}.encknda.mongodb.net/wastebin?retryWrites=true&w=majority/`, {
         useUnifiedTopology: true,
         useNewUrlParser: true,
     }, () => console.log(" Mongoose is connected")
