@@ -7,10 +7,18 @@ app.use(express.urlencoded({ extended: true }))
 
 import mongoose from "mongoose"
 import Document from "./models/Document.js"
-mongoose.connect("mongodb://localhost/wastebin", {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-})
+
+
+try {
+    mongoose.connect("mongodb+srv://Cluster54712:cllsclhIVHRc@cluster54712.encknda.mongodb.net/wastebin?retryWrites=true&w=majority/", {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+    }, () => console.log(" Mongoose is connected")
+    )
+
+} catch (e) {
+    console.log("could not connect");
+}
 
 
 app.get("/", (req, res) => {
