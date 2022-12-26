@@ -1,3 +1,6 @@
+import dotenv from 'dotenv'
+dotenv.config();
+
 import express from "express"
 const app = express()
 
@@ -5,20 +8,10 @@ app.set("view engine", "ejs")
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 
-import mongoose from "mongoose"
+
+import connectDB from './config/db.js'
+connectDB();
 import Document from "./models/Document.js"
-
-
-try {
-    mongoose.connect(`mongodb+srv://:${process.env.USER}@${process.env.PASSWORD}.encknda.mongodb.net/wastebin?retryWrites=true&w=majority/`, {
-        useUnifiedTopology: true,
-        useNewUrlParser: true,
-    }, () => console.log(" Mongoose is connected")
-    )
-
-} catch (e) {
-    console.log("could not connect");
-}
 
 
 app.get("/", (req, res) => {
@@ -27,6 +20,7 @@ Use the commands in the top right corner
 to create a new file to share with others.`
     res.render('code-display', { code, language: 'plaintext' })
 })
+
 
 app.get("/new", (req, res) => {
     res.render("new")
@@ -47,6 +41,7 @@ app.get("/:id/duplicate", async (req, res) => {
     const id = req.params.id
     try {
         const document = await Document.findById(id)
+        console.log(document)
         res.render("new", { value: document.value })
     } catch (e) {
         res.redirect(`/${id}`)
@@ -56,9 +51,12 @@ app.get("/:id/duplicate", async (req, res) => {
 app.get("/:id", async (req, res) => {
     const id = req.params.id
     try {
+        console.log('hi')
         const document = await Document.findById(id)
+        console.log('hi')
         res.render("code-display", { code: document.value, id })
     } catch (e) {
+        console.log(e.message)
         res.redirect("/")
     }
 })
